@@ -1,0 +1,14 @@
+{
+
+    "paths":{
+        "logFilePath": "ROOT/logs/#dts#_log.txt"
+        ,"folders": {
+            "messageHandlers": "ROOT/web/messageHandlers/"
+            , "pug": "ROOT/web/pug/"
+            , "web": "ROOT/web/"
+        }
+    }
+    ,"server":{
+        "port": 3000
+    }
+}

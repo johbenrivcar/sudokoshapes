@@ -1,0 +1,12 @@
+{
+    "server_to_client":{
+        "new-session": "new-session"
+        , "setcookies": "setcookies"
+        , "sessionOpen": "sessionOpen"
+        , "sessionuid": "sessionuid"
+        
+    }
+    , "client_to_server":{
+
+    }
+}

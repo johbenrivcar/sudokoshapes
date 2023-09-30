@@ -1,0 +1,13 @@
+- let dts = (new Date()).toISOString();
+
+div( style='background-color: pink; ')
+    p #{ dts }
+    p #{ dts.substr(0,10) } #{ dts.substr( 11, 5 ) }
+    p 
+        | There was an error in compilation of the pug template 
+        span(style=' font-family: courier new; ') #{ moduleName }
+    p The error message was:
+    pre #{ errorMessage }
+    p The full error information is:
+    pre #{ fullErrorInformation }
+</div>

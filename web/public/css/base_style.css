@@ -1,0 +1,459 @@
+
+body {
+    background-color: #dddddd;
+    font-family: 
+        soleil, 
+        noteworthy,  
+        tahoma,
+        'Courier New' ;
+    color: black;
+    font-size: 11pt;
+}
+
+
+
+h1 {
+    font-size: 14pt;
+    font-weight: normal;
+    color: darkgreen;
+}
+.h1 {
+    font-size: 12pt;
+    font-weight: normal;
+    color: darkgreen;
+}
+h2{
+
+    font-size: 11pt;
+    font-weight: normal;
+    color: navy;
+}
+
+.h2{
+
+    font-size: 11pt;
+    font-weight: normal;
+    color: navy;
+}
+
+h3, th  {
+
+    font-size: 10pt;
+    font-weight: normal;
+    color: navy;
+}
+
+.h3 {
+
+    font-size: 10pt;
+    font-weight: normal;
+    color: navy;
+}
+
+
+h4{
+
+    font-size: 8pt;
+    font-weight: normal;
+    color: navy;
+}
+
+.h4 {
+
+    font-size: 8pt;
+    font-weight: normal;
+    color: navy;
+}
+
+table {
+    table-layout: fixed;
+}
+
+
+a {
+    color: red;
+}
+
+a:hover{
+    background-color: palegreen;
+}
+pre {
+    white-space: pre-wrap;
+}
+
+.medium{
+    max-width: 100px;
+}
+.square{
+    max-width: 80px;
+    height: 45px;
+}
+.small{
+    max-width: 60px;
+}
+
+.button{
+    margin: 0px 3px 0px 3px;
+    padding: 2px;
+
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    font-size: 10pt;
+    background-color: rgb(156, 143, 177);
+    color:white;
+    cursor: pointer;
+}
+
+
+.button:hover{
+    background-color: rgb(172, 175, 211);
+    color: navy;
+    cursor: pointer;
+}
+
+.smallbutton{
+    height: 30px;
+    width: 40px;
+}
+
+.mediumbutton{
+    height: 40px;
+    width: 50px;
+}
+
+.largebutton{
+    height: 50px;
+    width: 65px;
+}
+
+.imgbutton{
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
+    border-style: none;
+    display: inline-block;
+    /*box-sizing:border-box;*/
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.gobutton{
+    background-color: mediumseagreen;
+    vertical-align: center;
+    text-align: center;
+}
+
+.gobutton:hover{
+
+    background-color: lightgreen;
+    vertical-align: center;
+    text-align: center;
+}
+
+.stopbutton{
+    background-color: salmon;
+}
+
+.stopbutton:hover{
+    background-color: pink;
+}
+
+.tickbutton{
+    background-image: url("/images/greentick.png") ;
+}
+
+.tickbutton:hover{
+    background-image: url("/images/lightgreentick.png") ;
+}
+
+.crossbutton{
+    background-image: url("/images/redcross.png") ;
+}
+.crossbutton:hover{
+    background-image: url("/images/pinkcross.png") ;
+}
+.redbox{
+    border-style: solid;
+    border-color: red;
+};
+
+.greenbox{
+    border-style: solid;
+    border-color: green;
+};
+
+.bluebox{
+    border-style: solid;
+    border-color: blue;
+}
+.blackbox{
+    border-style: solid;
+    border-color: black;
+}
+.whitebox{
+    border-style: solid;
+    border-color: white;
+}
+
+.leftmenuarea{
+    width: 120px; 
+    padding: 1px;
+    background-color: rgb(168, 170, 189); 
+    vertical-align: top;
+    
+}
+.leftmenubutton{
+    width: 100px;
+    margin: 0px;
+}
+
+.cancel{
+    background-image: url( "/images/redcross.png");
+}
+
+.clickable1{
+    border: none;
+    cursor: pointer;
+}
+
+.clickable1:hover{
+    background-color: palegreen;
+}
+
+.button-caption{
+    color: navy;
+    background-color: transparent;   
+}
+
+.indented{
+    margin-left: 10px;
+}
+
+.box{
+    border-style: solid;
+    border-color: blue;
+    border-width: 1px;
+}
+
+.button-disabled{
+    
+    background-color:     greenyellow;
+    color: navy;
+}
+
+.hidden{
+    display: none;
+}
+
+.errormessage{
+    background-color: yellow;
+    color: red;
+    font-size: 10pt;
+}
+
+/* formatting for form elements */
+.form-heading {
+    padding: 10px 10px 10px 10px;
+    font-size: 14pt;
+    color: slategray;
+}
+
+.form-table{
+    padding: 20px;
+    margin: 20px;
+    font-size: 12pt; 
+    font-family: calibri;
+    border-style: solid;
+    border-width: 1;
+    background-color: #eeeeee;
+
+}
+.form-table-row {
+    font-size: 12pt;
+    margin-top: 10px;
+}
+
+.form-label-left .form-label {
+    color: navy;
+}
+
+.form-label.right {
+    color: navy;
+    text-align: right;
+}
+
+.form-comment {
+    font-size: 10pt;
+    color: black;
+    padding-left: 10pt;
+}
+
+.form-input {
+    color: brown;
+}
+
+.form-submit-button{
+    margin: 10px;
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    font-size: 12pt;
+    background-color:      rgb(168, 198, 218);
+    color:white;
+    cursor: pointer;
+}
+
+.form-submit-button:hover {
+    background-color: greenyellow;
+    color: navy;
+    cursor: pointer;
+    
+}
+
+.form-link{
+    color: blue;
+    font-size: 10pt;
+}
+
+.form-link:hover{
+    color: green;
+    background-color: greenyellow;
+    cursor: pointer;
+}
+
+.form-info-message{
+    margin-left: 10px;
+    color: navy;
+    font-size: 12pt;
+    max-width: 400px;
+    padding: 10px;
+    text-align: justify;
+    background-color: mediumspringgreen;
+    min-height: 30px; 
+    margin: 0px; 
+    padding: 4px; 
+    position: relative; 
+}
+
+.form-float-right-button{
+    margin: 4px ; 
+    bottom: 0px; 
+    right: 0px; 
+    position: absolute; 
+}
+
+.form-invalid-input{
+    background-color: rgb(254, 255, 197);
+}
+
+/* scrollable boxes */
+.scrollable-h{
+    overflow-x: auto;
+}
+
+.scrollable-v{
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.scrollable{
+    overflow: auto;
+    display: block;
+    max-height: 85%;
+}
+
+
+/*GROUP ADMIN DIV*/
+#membersList-div{
+    border-style: solid;
+    border-width: 1px;
+    border-color: red;
+    height: 600px;
+    width: 700px;
+
+}
+#membersListTable{
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 8pt;
+    font-weight: normal;
+}
+
+.membersListRow {
+    background-color: cadetblue;
+}
+
+
+.membersListRow:hover {
+    background-color: palegreen;
+}
+
+
+
+ .membersListHeading {
+    background-color: rgb(156, 209, 211);
+}
+
+
+/* INLINE DECORATION */
+
+.inline-note{
+    font-size:10pt;
+    color: navy;
+}
+
+.inline-note-small{
+    font-size:10pt;
+    color: navy;
+}
+
+.selected{
+    background-color:     rgb(255, 179, 166);
+    color: navy;
+}
+
+/* heartbeat */
+.hbnumber{
+    background-color: lightgreen;
+    color: navy; 
+    font-family: courier new;
+}
+
+.footnote{
+    background-color: lightgrey;
+    color: navy;
+    font-size: 8pt
+}
+
+
+/* POP_UP BOX */
+/* The Modal (background) */
+.pu-box {
+    position: relative; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    overflow: visible; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .pu-box-content {
+    position: absolute; 
+    z-index: 1; /* Sit on top */
+    background-color: #fefefe;
+    margin: 0; /* 15% from the top and centered */
+    padding: 1px;
+    border: 1px solid #888;
+    max-width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* used by appFrameWork template */
+  .log { margin: 0px; padding: 0px ; }
+

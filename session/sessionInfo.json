@@ -1,0 +1,11 @@
+{
+    "prototype":{
+        "UID": ""
+        , "name": "anon"
+        , "type": "public"
+        , "perm":   "public"
+        , "personUID": ""
+        , "loginName": ""
+        
+    }
+}
