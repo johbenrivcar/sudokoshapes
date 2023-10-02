@@ -1,0 +1,74 @@
+html
+    head
+        title Sudoku Analysis
+        
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(href="//db.onlinewebfonts.com/c/6d2d1db79b94f420f7e74bf174749ca9?family=Soleil" rel="stylesheet" type="text/css")
+        link(href="//db.onlinewebfonts.com/c/016f50054d487d421dc18257a191a3ad?family=Noteworthy" rel="stylesheet" type="text/css")
+        
+        //- Load jquery script files
+        script( src="/jquery/jquery-3.4.1.js")
+
+        //- standard jQuery-ui files
+        link(rel="stylesheet" href="/jquery-ui/jquery-ui.css")
+        link(rel="stylesheet" href="/jquery-ui/jquery-ui.structure.min.css")
+        link(rel="stylesheet" href="/jquery-ui/jquery-ui.theme.min.css")
+        script(                src="/jquery-ui/jquery-ui.min.js")
+        
+        //- Styling for the application
+        link(rel="stylesheet" href="/public/css/base_style.css")
+
+        //- Load the scripts needed to run the page and connect to the server
+        //- script( src="/ev_events_script.js" )
+        script( src='/ws_messaging_script.js' )
+        
+        //- styling for this specific page
+        link(href=`${pageRoot}/stylingA.css` rel="stylesheet" type="text/css")
+        script( src=`${pageRoot}/home_script.js`)
+    script.
+        window.log=function(...args){
+            console.log(...args);
+        }
+        $( ()=>{
+            ws_loadOneDiv({
+                name: 'example'
+                , target: 'example'
+            });
+            log("The home template has loaded.")
+        });
+    body
+        h1 This is the Home page generated from a pug template in a sub-folder.
+        #page_div( style="border-width:1px; border-style: solid; border-color:green; width:100%" )
+            table#page-table( style="border-width:1px; border-style: solid; border-color:red; width:100%" )
+                tr 
+                    th( style=' width: 100px; ')
+                    th( style=' max-width: 1000px; ')
+                    th( style=' width: 200px; ')
+                tr 
+                    td( colspan=3 )
+                        #menu-top menu top row
+                            button( onClick=" alert(`hello`); $('#status').html(`Clicked`) ") This is a button
+                tr( style=`height: 500px`)
+                    td( style=" width: 100px; " )
+                        #menu-left menu left
+                    td 
+                        #page-main 
+                            h1 Sudoku analysis
+                        #grid1 grid1 
+                        #grid2 grid2
+                    td#gridlist grids
+                    
+                tr 
+                    td( colspan=3 )
+                        #page-footer 
+                            p Page footer
+        #example
+        #example-2
+        #status status info here y
+        #info 
+            h3 Info
+            //- dts is provided in the data to the template function.
+            p.time The time is #{dts.toISOString()}
+            p The page name is #{pageName}
+            p The page root folder is #{pageRoot}

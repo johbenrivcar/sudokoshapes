@@ -1,10 +1,7 @@
 h1{
     color: navy;
 }
-body{
-    font-family: tahoma;
-    background-color: rgb(212, 233, 240);
-}
+
 .time{
     font-family: 'Courier New', Courier, monospace;
     font-size: 16pt;

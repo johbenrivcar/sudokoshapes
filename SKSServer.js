@@ -144,12 +144,14 @@ const expressWs = require( `express-ws` )(expressApp);
 
 // Get the page loader module
 // The page loader responds to requests of the form http://SKSSserver/pages/<pageName>
-const pageLoaderPath = rootify ( `${GLOB.paths.folders.pug}pageLoader` );
+const pageLoaderPath = `${GLOB.paths.folders.pages}pageLoader` ;
+
 log("pageLoaderPath: ", pageLoaderPath);
 function loadPage( req, res ){
     let pl = dynamic( pageLoaderPath );
     pl.load( req, res );
 }
+
 //app.get( "/favicon.ico", GET_favicon_ico);
 
 expressApp.get( "/pages/:pageName", loadPage )
@@ -163,10 +165,11 @@ expressApp.get( "/", (req, res)=>{
     log("Response sent")
 });
 
+expressApp.use( express.static( "./web" ) );
 expressApp.use( express.static( "./web/public" ) );
 expressApp.use( express.static( "./web/public/images" ) );
-expressApp.use( express.static( "./web/pug/pages" ) );
-expressApp.use( express.static( "./web/pug/divs" ) );
+expressApp.use( express.static( "./web/pages" ) );
+expressApp.use( express.static( "./web/divs" ) );
 expressApp.use( express.static( "./web/test" ) );
 
 expressApp.use( express.urlencoded({ extended: false }) );

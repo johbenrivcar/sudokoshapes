@@ -15,7 +15,9 @@ const rootify = GLOB.util.appRoot.rootify;
 const mLoad = GLOB.util.mLoad;
 
 // path to pages folder
-const pugPagesFolder = rootify( GLOB.paths.folders.pug + "pages/" )
+const pagesFolder = rootify( GLOB.paths.folders.pages ) // /web/pages
+const divsFolder = rootify( GLOB.paths.folders.divs )   // /web/divs
+const pugFolder = rootify( GLOB.paths.folders.pug )     // /web/pages
 
 // dynamic loader used to load page modules, so that they will
 // be reloaded if the module source code is changed.
@@ -32,7 +34,7 @@ async function loadPage( req, res ){
 
     let pageName = req.params.pageName;
 
-    let pageFolderPath = pugPagesFolder + pageName;
+    let pageFolderPath = pagesFolder + pageName;
     let htmlFolderPath =     `/` + pageName;
     let loaderPath;
     let pugTemplatePath;
@@ -102,6 +104,24 @@ async function loadPage( req, res ){
 
 }
 
+/**
+ * Given a websocket context and a div name, will retrieve the pug
+ * definition for the div, render the div using the supplied data
+ * and send the resulting html to the client through the websocket
+ * @param {*} wsContext 
+ */
+async function renderAndWS( wsContext ){
+
+/*
+    STEPS
+    1. Establish the name of the pug file
+    2. Check that the pug exists, if not try to load the equivalent .html file
+    3. If found use the pug function and the supplied data to generate html
+    4. Using the supplied reference to the websocket connection, send a [div] message 
+       to the client as a response to the incoming message
+*/
+    
+}
 
 function renderAndSend( loaderContext ){
     let {req, res, pugTemplatePath, data} = loaderContext;

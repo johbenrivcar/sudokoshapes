@@ -1,6 +1,6 @@
 
 body {
-    background-color: #dddddd;
+    background-color: #00000000;
     font-family: 
         soleil, 
         noteworthy,  
@@ -67,8 +67,20 @@ h4{
 
 table {
     table-layout: fixed;
+    border-collapse: none;
+    border-style: solid;
+    border-color: blue;
 }
 
+td {
+    text-align: left;
+    vertical-align: top;
+    border-style: solid;
+    border-color: blue;
+    border-width: 1px;
+    padding: 3px;
+
+}
 
 a {
     color: red;
@@ -457,3 +469,12 @@ pre {
   /* used by appFrameWork template */
   .log { margin: 0px; padding: 0px ; }
 
+  #menu-left{
+    max-width: 100px;
+    background-color: palegreen;
+  }
+
+  #status{
+    background-color: slateblue;
+    color: yellow;
+  }

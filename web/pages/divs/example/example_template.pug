@@ -1,0 +1,14 @@
+div( id=`example_div_from_server${divNonce}` class="example-div")
+    script 
+        | function reload_#{divNonce}(target) {
+        |   ws_loadOneDiv({
+        |        name: 'example'
+        |        , target
+        |    });
+        |  };
+    link(rel="stylesheet" href="/divs/example/example_style.css")
+    p This is the example div from the server, nonce is #{divNonce}
+    p This div is named "#{divName}"
+    p The target location div is [#{divTarget}]
+    button( onclick=` reload_${divNonce}("example") ;`) Press here to reload 
+    button( onclick=` reload_${divNonce}("gridlist") ;`) Press here to reload into gridlist

@@ -37,7 +37,7 @@ module.exports.log = function( ...args ){
                 console.log( ...args )
         };
 
-module.exports.verbose = true;
+module.exports.verbose = false;
 
 
 // Internal log function uses the exported function. This allows
@@ -243,5 +243,6 @@ log("compileError: ", compileError);
 log( "##<< mLoad" );
 
 // After loading, switch off verbose mode
-module.exports.verbose = true;
+module.exports.verbose = false;
+
 module.exports.htmlErrorReport = pugErrorFunction;

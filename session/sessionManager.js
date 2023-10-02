@@ -55,7 +55,11 @@
 
     //const PSNCollection = require( ROOT + "/database/PSNCollection");
     //const PSNdoc = require(ROOT + "/database/PSNdoc");
-    var ANON_PSN = null;
+    var ANON_PSN = {
+        psnName: "Anonymous"
+        ,psnUID: "0ui27uydhe7yfh8fwerwsosfju3238"
+        
+    };
 
 
     //const PSNOperations = require( ROOT + "/database/PSNOperations");

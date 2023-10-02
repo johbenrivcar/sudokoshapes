@@ -4,7 +4,9 @@
         "logFilePath": "ROOT/logs/#dts#_log.txt"
         ,"folders": {
             "messageHandlers": "ROOT/web/messageHandlers/"
-            , "pug": "ROOT/web/pug/"
+            , "pug": "ROOT/web/pages/"
+            , "pages": "ROOT/web/pages/"
+            , "divs": "ROOT/web/pages/divs/"
             , "web": "ROOT/web/"
         }
     }

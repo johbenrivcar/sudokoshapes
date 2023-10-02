@@ -1,39 +1,40 @@
 html
     head
-        title Sudoku Analysis
+        title Test1abc
         
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(href="//db.onlinewebfonts.com/c/6d2d1db79b94f420f7e74bf174749ca9?family=Soleil" rel="stylesheet" type="text/css")
         link(href="//db.onlinewebfonts.com/c/016f50054d487d421dc18257a191a3ad?family=Noteworthy" rel="stylesheet" type="text/css")
         
-        //- standard jQuery UI css loads
-        link(rel="stylesheet" href="/css/jquery-ui.css")
-        link(rel="stylesheet" href="/css/jquery-ui.structure.min.css")
-        link(rel="stylesheet" href="/css/jquery-ui.theme.min.css")
-        script( src="/css/jquery-ui.min.js")
+        //- Load jquery script files
+        script( src="/jquery/jquery-3.4.1.js")
+
+        //- standard jQuery-ui files
+        link(rel="stylesheet" href="/jquery-ui/jquery-ui.css")
+        link(rel="stylesheet" href="/jquery-ui/jquery-ui.structure.min.css")
+        link(rel="stylesheet" href="/jquery-ui/jquery-ui.theme.min.css")
+        script(                src="/jquery-ui/jquery-ui.min.js")
         
-        //- default tyling for the application
+        //- Styling for the application
         link(rel="stylesheet" href="/css/base_style.css")
 
         
-        //- Load jquery script files
-        script( src="/jquery/jquery-3.4.1.js")
         
 
         //- Load the scripts needed to run the page and connect to the server
-        script( src="/ev_events_script.js" )
-        script( src='/twu_tigerwebUtil_script.js' )
+        //- script( src="/ev_events_script.js" )
+        script( src='/ws_messaging_script.js' )
         
         //- styling for this specific page
-        link(href=`${pageRoot}/stylingA.css` rel="stylesheet" type="text/css")
+        link(href="/test1/stylingA.css" rel="stylesheet" type="text/css")
     script.
         window.log=function(...args){
             console.log(...args);
         }
         $( ()=>{
-            twu_loadOneDiv({
-                name: '_example/_example'
+            ws_loadOneDiv({
+                name: 'example'
                 , target: 'example'
             });
             log("The test1 template has loaded.")
@@ -41,7 +42,6 @@ html
     body
         h1 This is the Test1 page generated from a pug template in a sub-folder.
         //- dts is provided in the data to the template function.
-        p.time The time is #{dts.toISOString()}
-        p The page name is #{pageName}
-        p The page root folder is #{pageRoot}
+        p.time The time is #{time} on #{date}
+            
         #example
