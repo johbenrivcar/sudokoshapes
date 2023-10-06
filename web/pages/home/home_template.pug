@@ -1,3 +1,24 @@
+
+mixin grid(val)
+    div(id=`grid${val}`)
+        div(id=`grid${val}-id`) Not loaded
+        table(style=`` class=`grid`)
+            tr 
+                each cg in ["1-3","4-6","7-9"]
+                    td(colspan=3)
+                        | [---#{cg}---]
+
+            each row in [1,2,3,4,5,6,7,8,9]
+                tr()
+                    each col in [1,2,3,4,5,6,7,8,9]
+                        td(id=`gc-${val}-${row}-${col}` class=`hue-U` style="text-align: center; vertical-align: middle;") #{row}#{col}
+        div
+            h3 
+                | Analysis
+                span(onClick=` runAnalysis(${val});` class=`button` ) Run
+            div( id=`gridanalysis-${val}`)
+
+| <!DOCTYPE html>
 html
     head
         title Sudoku Analysis
@@ -24,7 +45,7 @@ html
         script( src='/ws_messaging_script.js' )
         
         //- styling for this specific page
-        link(href=`${pageRoot}/stylingA.css` rel="stylesheet" type="text/css")
+        link(href=`${pageRoot}/grid_styling.css` rel="stylesheet" type="text/css")
         script( src=`${pageRoot}/home_script.js`)
     script.
         window.log=function(...args){
@@ -48,15 +69,18 @@ html
                 tr 
                     td( colspan=3 )
                         #menu-top menu top row
-                            button( onClick=" alert(`hello`); $('#status').html(`Clicked`) ") This is a button
+                            button( onClick=" ws.updateStatus(`Clicked`); ") This is a button
                 tr( style=`height: 500px`)
                     td( style=" width: 100px; " )
                         #menu-left menu left
                     td 
                         #page-main 
                             h1 Sudoku analysis
-                        #grid1 grid1 
-                        #grid2 grid2
+                        table( style="width:100%") 
+                            tr( style="height:500px")
+                                each val in [1,2]  
+                                    td
+                                        +grid(val)
                     td#gridlist grids
                     
                 tr 
@@ -65,7 +89,7 @@ html
                             p Page footer
         #example
         #example-2
-        #status status info here y
+        #status.statusmsg status info here y
         #info 
             h3 Info
             //- dts is provided in the data to the template function.

@@ -139,6 +139,7 @@ const ws = {
     , loadSomeDivs: ws_loadSomeDivs
     , goToDiv: ws_goToDiv
     , temp: ws_temp
+    , updateStatus: ws_updateStatus
 };
 
 
@@ -221,9 +222,9 @@ function ws_startHeartBeat(){
 function ws_updateStatus( msg ){
     let newStatus = msg.status? msg.status : msg ;
     let classes = msg.classes? msg.classes : null ;
-
+    console.log("New status", msg);
     let sm = $('#statusmsg, .statusmsg');
-    sm.removeClass().addClass(".statusmsg");
+    sm.removeClass().addClass("statusmsg");
     sm.html( newStatus );
     if( classes )sm.addClass( classes );
 }

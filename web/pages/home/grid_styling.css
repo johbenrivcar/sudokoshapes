@@ -1,0 +1,44 @@
+h1{
+    color: navy;
+}
+
+.time{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16pt;
+}
+
+.grid-loading{
+    background-color: yellow;
+}
+
+.hue-A{
+    background-color: azure;
+}
+.hue-B{
+    background-color: brown;
+}
+.hue-C{
+    background-color: chartreuse;
+}
+.hue-D{
+    background-color: deeppink;
+}
+.hue-E{
+    background-color: grey;
+}
+.hue-F{
+    background-color: firebrick;
+}
+.hue-G{
+    background-color: goldenrod;
+}
+.hue-H{
+    background-color: honeydew;
+}
+.hue-I{
+    background-color: indigo;
+}
+.hue-U{
+    border-color: red;
+    background-color: white;
+}
