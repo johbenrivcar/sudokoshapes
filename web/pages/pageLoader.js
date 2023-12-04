@@ -11,13 +11,15 @@ module.exports.load = loadPage;
 
 // refs to global utility modules and functions
 const log = GLOB.util.logger.getLogger( "pageLoader" );
-const rootify = GLOB.util.appRoot.rootify;
+const rootify = GLOB.rootify;
 const mLoad = GLOB.util.mLoad;
 
+const pugLoader = GLOB.util.pugLoader;
+
 // path to pages folder
-const pagesFolder = rootify( GLOB.paths.folders.pages ) // /web/pages
-const divsFolder = rootify( GLOB.paths.folders.divs )   // /web/divs
-const pugFolder = rootify( GLOB.paths.folders.pug )     // /web/pages
+const pagesFolder =  GLOB.settings.paths.folders.pages  // /web/pages
+//const divsFolder =  GLOB.settings.paths.folders.divs    // /web/divs
+//const pugFolder =  GLOB.settings.paths.folders.pug      // /web/pages
 
 // dynamic loader used to load page modules, so that they will
 // be reloaded if the module source code is changed.
@@ -69,7 +71,7 @@ async function loadPage( req, res ){
     let loader = null;
 
     // call the loader function, passing request, response and template path
-    let loaderContext = { req, res, pugTemplatePath, data: { pageName, dts: new Date(), pageRoot: htmlFolderPath } }
+    let loaderContext = { req, res, pugTemplatePath, data: { pageName, dts: new Date(), pageRoot: htmlFolderPath, pugTemplatePath } }
     //log.object("loaderContext", loaderContext );
     try{
         
@@ -139,7 +141,9 @@ function renderAndSend( loaderContext ){
 
         // Loading the pug template using dynamic also compiles the template 
         // into a function automatically.
-        let pugTemplateFunction = dynamic( pugTemplatePath );
+        //let pugTemplateFunction = dynamic( pugTemplatePath );
+        
+        let pugTemplateFunction = pugLoader.load(pugTemplatePath);
         let html = pugTemplateFunction( data )
         res.send( html ).status(200).end();
 

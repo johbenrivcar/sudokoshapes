@@ -1,8 +1,8 @@
 /* OVERVIEW
-        Client-side tiger utility script. Every tiger page must load this script as
+        Client-side utility script. Every tiger page must load this script as
         it controls all aspects of session and permission management. It also provides
-        a library of standard functions for handling ws messages in both directions between
-        the client and server.
+        a library of standard functions for handling websocket messages in both directions
+        between the client and server.
 
         On initial load, the script checks for current session state as stored in the sessiondata
         and requests confirmation from the server that this is a valid session that can 

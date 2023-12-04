@@ -1,11 +1,18 @@
 # Logs
 logs
 *.log
+*_log.txt
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+
+# User data
+usersDB.json
+DB
+
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

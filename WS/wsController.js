@@ -6,6 +6,8 @@
     message to that handler for processing.
 
 */
+const GLOB = require( "../GLOB/GLOB");
+
 const log = GLOB.util.logger.getLogger( "wsController" );
 
 const gGLOB = GLOB
@@ -19,7 +21,7 @@ const cryptr = require( "cryptr");
 const dynamic = globalUtil.mLoad.dynLoad;
 
 // Load the session manager
-const sessionManager = require(ROOT + `/session/sessionManager`);
+const sessionManager = require(GLOB.ROOT + `/session/sessionManager`);
 
 const getUID = globalUtil.getUID;
 
@@ -232,7 +234,7 @@ async function handleWSMessage( ws, rawmsg ){
     // to the message type in msgType
 
     let msgType = wsmsg.msgType.toLowerCase();
-    let handlerPath = `${gGLOB.paths.folders.messageHandlers}${msgType}_handler.js`;
+    let handlerPath = `${GLOB.settings.paths.folders.messageHandlers}${msgType}_handler.js`;
     log(`Handler: ${handlerPath}`);
 
     let replyMsg ={

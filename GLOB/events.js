@@ -1,5 +1,7 @@
 "use strict";
 
+const GLOB = require("./GLOB");
+
 /**
  * Module provides an event system for subscribing to events using
  * a hierarchical event key structure.
@@ -154,6 +156,6 @@ var ev_number = 0;
     if( !evType.slice(0,1)!=="!" && !event_types_json[evType] ) event_types_json[evType] = `Unknown - first used ${timeStamp()}`
     let evTypes = JSON.stringify( event_types_json , null, 2 );
     //if(evTypes.length < 150 ) throw new Error("tried to write short JSON");
-    fs.writeFile( ROOT + '/util/event_types.json', evTypes, ()=>{ return; });
+    fs.writeFile( GLOB.ROOT + '/util/event_types.json', evTypes, ()=>{ return; });
  };
 

@@ -1,0 +1,9 @@
+#ec Error count: #{errorCount}
+if errorCount > 0
+    #error-list.error
+        each error in errorList 
+            <br>
+            span.errormessage #{error.description}
+else
+    #save-report.
+        Successful save of grid to storage on server.

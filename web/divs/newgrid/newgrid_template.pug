@@ -1,0 +1,47 @@
+include ../../mixins/grid_mixin.pug
+ 
+div( id=`div-newgrid-${divNonce}` class="newgrid-div")
+    script(src=`${divRoot}/newgrid_script.js`)
+    script 
+        | ng.divNonce=`#{divNonce}`
+        | function reload_#{divNonce}(target) {
+        |   ws_loadOneDiv({
+        |        name: 'newgrid'
+        |        , target
+        |    });
+        |  };
+        | console.log("Root is #{divRoot}")
+        | ws.wsOn( "ng_reportErrors", ng.reportErrors );
+    link(rel="stylesheet" href=`${divRoot}/newgrid_style.css`)
+    p Enter the grid using nine lines of nine digits which conform to Sudoku rules
+    table 
+        tr 
+            td
+                textarea(id=`input-${divNonce}`, onInputxx=`$("#btnSave").addClass("hidden");` rows=9, columns=9, class=`newgrid_textarea` ).
+                    435 269 781
+                    682 571 493
+                    197 834 562
+                    826 195 347
+                    374 682 915
+                    951 743 628
+                    519 326 874
+                    248 957 136
+                    763 418 259
+                br
+                #txt-clear.button.smallbutton( onClick=` $("#input-${divNonce}")[0].value="";` ) clear
+            td
+                #btnValidate.button.mediumbutton( onClick=`ng.validateGrid($('#input-${divNonce}')[0])`) Check
+                #btnSave.hidden
+                    | Enter your initials
+                    br
+                    input(  id=`initials-${divNonce}` )
+                    #xx.button.mediumbutton( onClick=`ng.saveGrid($('#input-${divNonce}')[0],$('#initials-${divNonce}')[0])`) Save
+
+            td 
+                #grid-errors Errors shown here
+
+
+    p This div is named "#{divName}"
+    p The target location div is [#{divTarget}]
+    p The div root path is [#{divRoot}]
+    

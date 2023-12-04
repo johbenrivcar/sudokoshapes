@@ -6,9 +6,14 @@
             "messageHandlers": "ROOT/web/messageHandlers/"
             , "pug": "ROOT/web/pages/"
             , "pages": "ROOT/web/pages/"
-            , "divs": "ROOT/web/pages/divs/"
+            , "divs": "ROOT/web/divs/"
             , "web": "ROOT/web/"
+            , "data": "ROOT/data/"
         }
+    }
+    ,"gridsDB":{
+          "readPath": "ROOT/data/DB/gridsDB.json"
+        , "writePath": "ROOT/data/DB/gridsDB.json"
     }
     ,"server":{
         "port": 3000

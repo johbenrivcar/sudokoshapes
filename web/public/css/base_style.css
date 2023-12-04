@@ -105,24 +105,41 @@ pre {
 }
 
 .button{
-    margin: 0px 3px 0px 3px;
-    padding: 2px;
-
+    margin: 3px 3px 3px 3px;
+    padding: 6px;
+    display: flex;
     text-align: center;
     border-style: solid;
     border-width: 1px;
-    border-color: grey;
+    border-color: blue;
     font-size: 10pt;
-    background-color: rgb(156, 143, 177);
-    color:white;
+    background-color: rgb(224, 224, 224);
+    color: navy;
     cursor: pointer;
+
+    align-content: center;
+    border-radius: 2px;
+    -webkit-transition-duration: 0.2s; /* Safari */
+    transition-duration: 0.2s;
+  
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 255, .2);
+  
 }
 
 
 .button:hover{
-    background-color: rgb(172, 175, 211);
+    background-color: rgb(232, 245, 229);
     color: navy;
     cursor: pointer;
+    box-shadow: 4px 4px 2px 1px rgba(0, 0, 255, .2);
+  
+}
+
+.button:active{
+    background-color: rgb(232, 245, 229);
+    color: navy;
+    cursor: pointer;
+    box-shadow: inset 2px 2px 2px 1px rgba(0, 0, 255, .2);
 }
 
 .smallbutton{
@@ -261,11 +278,20 @@ pre {
 }
 
 .errormessage{
-    background-color: yellow;
+    background-color: pink;
     color: red;
     font-size: 10pt;
 }
-
+.successmessage{
+    background-color: palegreen;
+    color: navy;
+    font-size: 10pt;
+}
+.warningmessage{
+    background-color: lightyellow;
+    color: navy;
+    font-size:10pt;
+}
 /* formatting for form elements */
 .form-heading {
     padding: 10px 10px 10px 10px;

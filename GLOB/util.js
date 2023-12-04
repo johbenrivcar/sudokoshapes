@@ -232,12 +232,16 @@ class PromiseMonitor {
         if( !ddd ) ddd = new Date();
         var sDts = ddd.toISOString();
         return sDts.substr(0, 4) + sDts.substr( 5, 2) + sDts.substr(8, 2) + "_" + sDts.substr(11,2) + sDts.substr(14,2) + sDts.substr(17,2);
-    }
+    };
 
     function dts(){
         return yyyymmdd_hhmmss()
-    }
+    };
     
+    function dateAndTime(ddd){
+        let dt = yyyymmdd_hhmmss(ddd).split("_")
+        return { date: dt[0], time: dt[1].substring(0,4) }
+    };
 
     
 // ========================================================================================== getUID
@@ -254,6 +258,10 @@ function getUID(){
     return uuid;
 }
 
+function nonce(l=5){
+    if(!l)l=5;
+    return getUID().substring(0,5);
+}
 function parseWSMessage( wsmsg ){
     //log("parseWSMessage", wsmsg);
     let oMsg = null;
@@ -347,16 +355,18 @@ function preprocessJSON( entry ){
     };
 
 module.exports = {
-    simpleClone: simpleClone
-    , getRandom: getRandom
-    , r255: r255
-    , hhmm: hhmm
-    , hhmmss: hhmmss
-    , yyyymmdd_hhmmss: yyyymmdd_hhmmss
-    , dts: dts
-    , getUID: getUID
-    , preprocessJSON: preprocessJSON
-    , parseWSMessage: parseWSMessage
+    simpleClone
+    , getRandom
+    , r255
+    , hhmm
+    , hhmmss
+    , yyyymmdd_hhmmss
+    , dateAndTime
+    , dts
+    , getUID
+    , nonce
+    , preprocessJSON
+    , parseWSMessage
     , PromiseMonitor: PromiseMonitor
 
 }

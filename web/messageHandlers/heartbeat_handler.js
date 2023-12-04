@@ -19,7 +19,7 @@ async function handleMessage( ws, msg, replyMsg ){
     replyMsg.msgType = "heartbeat";
     
     function heartBeat(){
-        log("HB", cnxNumber, tickNumber);
+        //log("HB", cnxNumber, tickNumber);
         if( ws.sessionHasClosed ){
             log(`Session #${cnxNumber} has closed - heartbeat stopping`);
             return;

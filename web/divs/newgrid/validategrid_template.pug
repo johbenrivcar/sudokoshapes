@@ -1,0 +1,8 @@
+if errorCount > 0
+    #error-list.error
+        each error in errorList 
+            <br>
+            span.errormessage #{error.description}
+else
+    #validate-report.
+        No errors, grid is valid

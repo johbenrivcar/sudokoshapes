@@ -11,16 +11,20 @@
  *      collect messages in batches and send them at 1s intevals
  * 
  */
+    const GLOB = require("./GLOB");
 
     console.log("##>> logSubcriptionManager");
 
     const nullValue = Math.random() * 10000 + 1
 
 
-    const rootify = GLOB.util.appRoot.rootify;
+    console.log("GLOB:", GLOB);
+
+    const rootify = GLOB.rootify;
     const logger = GLOB.util.logger;
     const SKSUtil = GLOB.util;
-    const paths = GLOB.paths;
+    const paths = GLOB.settings.paths;
+
     const EVENTS = GLOB.EVENTS;
     //const cLog = function(...params){ console.log("[LSM]", ...params)}
 

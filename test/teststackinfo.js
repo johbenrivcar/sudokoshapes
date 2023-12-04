@@ -15,10 +15,10 @@ function level1(){
 
 function level2(){
     level3();
-
+    console.log( getStackInfo(2));
 }
 function level3(){
-    getStackInfo(1);
+    console.log( getStackInfo(2));
 
 }
 

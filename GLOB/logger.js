@@ -1,5 +1,5 @@
 "use strict";
-
+const GLOB = require(`./GLOB`);
 /*
     Provides a means of logging messages to the console,
     a log file, and the ^/web/pages/logreport page from any module.
@@ -14,14 +14,14 @@ console.log("##> logger");
 
 const contextLoggers = {};
 
-if(!global._LOGGER) {
-    global._LOGGER = {};
-    global._LOGGER.activeContextList = [];
-    global._LOGGER.inactiveContextList = [];
+if(!GLOB._LOGGER) {
+    GLOB._LOGGER = {};
+    GLOB._LOGGER.activeContextList = [];
+    GLOB._LOGGER.inactiveContextList = [];
 };
 
-const activeContextList = global._LOGGER.activeContextList;
-const inactiveContextList = global._LOGGER.inactiveContextList;
+const activeContextList = GLOB._LOGGER.activeContextList;
+const inactiveContextList = GLOB._LOGGER.inactiveContextList;
 var logstack = [];
 var logstackLevel = 0;
 var currentIndent = "|";
@@ -59,7 +59,7 @@ var logColors = {
 
 };
 // Get ref to global variable holding the last log tag lastLogTag;
-let gLogging = global.GLOB.logging;
+let gLogging = GLOB.logging;
 if(!gLogging) gLogging={};
 if(!gLogging.lastLogTag) gLogging.lastLogTag = "";
 
@@ -456,4 +456,10 @@ if(loggerDebug){
 
     console.log("Finished testing logger");
 
+}
+
+class modLogger {
+    constructor(){
+        
+    }
 }

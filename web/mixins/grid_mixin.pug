@@ -1,0 +1,41 @@
+- function grid_log(...params){ console.log("grid_mixin|", ...params)}
+- grid_log("loaded")
+//- Expects the single number {gridNumber} in globals
+mixin grid(gridNumber) 
+    - let gridDivId = `grid${gridNumber}`
+    .grid-div(id=`${gridDivId}`)
+        div(id=`${gridDivId}-name`) Not loaded
+        table(style=`` class=`grid`)
+            tr 
+                td( class=`col-divider`)
+                td(rowspan=13 class=`col-divider`)
+                each cg in ["A","B","C"]
+                    td(id=`${gridID}-cg-hdg-${cg}` colspan=3 style="width: 100px;" class=`colGroup-heading cg-${cg}`)
+                        | #{cg}
+                    td(rowspan=13 class=`col-divider`)
+
+            each row in [1,2,3,4,5,6,7,8,9]
+                - let rg = row<4? "A": row<7? "B": "C"
+                if [1,4,7].includes(row)
+                    tr() 
+                        each cg in ["A","B","C"]
+                                td(colspan=4 style="width: 100px;" class="col-divider")
+                tr()
+                    if [1,4,7].includes(row)
+                        td(rowspan=3 class=`colGroup-heading rg-${rg}` id=`${gridID}-rg-hdg-${rg}`) #{rg}
+                    each col in [1,2,3,4,5,6,7,8,9]
+                        - let cg = col<4? "A": col<7? "B": "C"
+                        td(id=`${gridDivId}r${row}c${col}` class=`grid-cell cg-${cg} rg-${rg} hue-U ` style="text-align: center; vertical-align: middle;") #{row}#{col}
+                
+        div
+            h3 
+                | Analysis
+                span(onClick=` loadGrid( '${gridDivId}', grids[1].gridInfo );` class=`button` ) Load
+                span(onClick=` analyseGrid('${gridNumber}');` class=`button` ) Run
+            div( id=`gridanalysis-${gridNumber}`)
+        script 
+            | if(!document.allGridDivs) document.allGridDivs = {};
+            | console.log("allGridDivs", document.allGridDivs );
+            | document.allGridDivs[`#{gridDivId}`] = { gridDivId: `#{gridDivId}`, loadedGrid: "", gridInfo: "" };
+            | Object.keys(document.allGridDivs).forEach( key=>{ if($(`#${key}`).length==0){delete document.allGridDivs[key]} });
+            | console.log("Divs containing grids:", Object.keys(document.allGridDivs));

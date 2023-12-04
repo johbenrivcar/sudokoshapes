@@ -29,7 +29,7 @@ const EVENTS = GLOB.EVENTS;
 // Get rootify function which helps us find paths relative
 // to the application root folder, even when we don't know
 // which folder the current module is in.
-const rootify = GLOB.util.appRoot.rootify;
+const rootify = GLOB.rootify;
 
 // ==================================================================== log
 // Get a logging function for this module
@@ -46,7 +46,11 @@ require( "./GLOB/logSubscriptionManager" ).logToFile();
 
 //
 // ==================================================================== Notification of server ready
-EVENTS.on("server.ready", ()=>{ log("SKS Server is ready");} )
+EVENTS.on("server.ready", ()=>{ 
+    log("SKS Server is ready");
+    log(`Reading db from ${GLOB.settings.gridsDB.readPath}`)
+    log(`Writing db to ${GLOB.settings.gridsDB.writePath}`)
+} )
 
 //const DBService = GLOB.DBService;
 
@@ -82,8 +86,8 @@ log.object( 'Run time parameters', runtime );
 
 // NOTES TO LOG
 log( `Application GLOB.ROOT folder is ${GLOB.ROOT}` );
-log( `SETTINGS:` , GLOB );
-
+log( `GLOB:` , GLOB );
+log( `settings.paths:`, GLOB.settings.paths);
 
 // =========================================================================================================
 // ========================================= BASIC MODULES SECTION =========================================
@@ -115,12 +119,12 @@ const bodyParser = require( "body-parser" );
 const cookieParser = require( 'cookie-parser' );
 const sessionManager = require("./session/sessionManager");
 
-const messageHandlersFolder = rootify( GLOB.paths.folders["messageHandlers"] ) ;
+const messageHandlersFolder = rootify( GLOB.pathTo("messageHandlers") ) ;
 log( `messageHandlersFolder: ${messageHandlersFolder}`);
 
 // get the port number to listen for http messages
 var mainPort = runtime.port? runtime.port 
-                : GLOB.server.port? GLOB.server.port
+                : GLOB.settings.server.port? GLOB.settings.server.port
                 : 3000;
 
 
@@ -144,7 +148,7 @@ const expressWs = require( `express-ws` )(expressApp);
 
 // Get the page loader module
 // The page loader responds to requests of the form http://SKSSserver/pages/<pageName>
-const pageLoaderPath = `${GLOB.paths.folders.pages}pageLoader` ;
+const pageLoaderPath = `${GLOB.settings.paths.folders.pages}pageLoader` ;
 
 log("pageLoaderPath: ", pageLoaderPath);
 function loadPage( req, res ){

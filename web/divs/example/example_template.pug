@@ -1,3 +1,5 @@
+include ../../mixins/grid_mixin.pug
+ 
 div( id=`example_div_from_server${divNonce}` class="example-div")
     script 
         | function reload_#{divNonce}(target) {
@@ -8,7 +10,9 @@ div( id=`example_div_from_server${divNonce}` class="example-div")
         |  };
     link(rel="stylesheet" href="/divs/example/example_style.css")
     p This is the example div from the server, nonce is #{divNonce}
+    p Hi Alice!
     p This div is named "#{divName}"
     p The target location div is [#{divTarget}]
-    button( onclick=` reload_${divNonce}("example") ;`) Press here to reload 
-    button( onclick=` reload_${divNonce}("gridlist") ;`) Press here to reload into gridlist
+    button( class="button" onclick=` reload_${divNonce}("example") ;`) Press here to reload 
+    button( class="button" onclick=` reload_${divNonce}("gridlist") ;`) Press here to reload into gridlist
+    +grid(`G${divNonce}`)

@@ -1,5 +1,7 @@
 "use strict";
 
+const nodeutil = require("util");
+
 /*
         Manages dynamic reloading of modules that may change while the server
         is running.
@@ -44,43 +46,41 @@ module.exports.verbose = true;
 // the user of this module to replace the mLoad.log function with their
 // own.
 function log (...args){
-        if( module.exports.verbose ) module.exports.log( '[mLoad]| ', ...args );
+        if( module.exports.verbose ) module.exports.log( '[pugLoad] | ', ...args );
 };
 
-// Report to the log that this module is being loaded
-log( ">>## mLoad.js");
+// Report to the console that this module is being loaded
+console.log( ">>## pugLoad.js");
 
 // export the loader functions
 //module.exports.statLoad = staticLoad;
-        module.exports.dynamic = 
-        module.exports.dynLoad = dynamic;
+        module.exports.load = loadPugModule;
 
 // export the list of dynamic modules currently loaded (for debugging/reporting)
-module.exports.moduleList = [];
+const moduleList = module.exports.moduleList = [];
+
 
 // USE OF GLOBAL
 /** The node module loader does not guarantee that a specific module
  * is loaded only once into the applicaion, so it is possible that this
  * module could be loaded more than once. To avoid the possibility of
- * having two separate copies of mLoad running two separate caches of
+ * having two separate copies of pugLoad running two separate caches of
  * modules loaded dynamically, the cache of modules is stored in the
- * global object and shared between the two (or more) copies of mLoad.
+ * global object and shared between the two (or more) copies of pugLoad.
  */
 
-// Create global MLOAD if not already created
-if(!global._MLOAD) global._MLOAD = {};
+// Create global PUGLOAD if not already created
+if(!global._PUGLOAD) global._PUGLOAD = {};
 
 // Create the empty global dynamic cache if not already created
-if( !global._MLOAD.dynamicCache ){ global._MLOAD.dynamicCache = {} };
+if( !global._PUGLOAD.pugModuleCache ){ global._PUGLOAD.pugModuleCache = {} };
 
 // Get a local reference to the global dynamic cache
-const dynamicCache = global._MLOAD.dynamicCache;
-
-// Get the latest list of modules that have been loaded dynamically
-//var moduleList = Object.keys( dynamicCache );
+const pugModuleCache = global._PUGLOAD.pugModuleCache;
 
 // File system library
 const fs = require( "fs" );
+
 // Pug library for compiling pug templates
 const pug = require( "pug" );
 
@@ -90,23 +90,20 @@ var compileError = null;
 
 // ------------------------------------------------------------------- dynamicLoad
 /**
- * Dynamic load monitors the loaded source module after it has been loaded, and deletes
- * the loaded module from the dynamic cache if the source code changes. This means that
- * the module will be reloaded if it is requested again using this dynamic load function.
+ * Dynamic load monitors the pug module file after it has been loaded and compiled, and deletes
+ * the compiled module from the dynamic cache if the source code file changes. This means that
+ * the module will be reloaded and compiled when it is requested again using this dynamic load function.
  * @param {*} modName 
  */
-function dynamic( modName ){
+function loadPugModule( modName ){
 
-        log( `dynamic load requested for ${modName}` );
+        if( module.exports.verbose )  log( `dynamic load requested for ${modName}` );
 
         let xModule = null;
         let fullModName = modName; 
 
-        // Set pug flag if this is a request to load a  
-        // pug template, indicated by [.pug] suffix
-        let bPugTemplateRequest = ( fullModName.slice(-4).toLowerCase() === '.pug' );
+        let bPugTemplateRequest = true;
         
-
         let resolvedModuleName = null
         try{
                 // get the resolved path to the module using [require].resolve function
@@ -114,13 +111,12 @@ function dynamic( modName ){
                 if( module.exports.verbose )  log( `..path is ${resolvedModuleName}` );
 
                 // look for the module with the resolved name in the dynamicCache
-                xModule = dynamicCache[ resolvedModuleName ];
+                xModule = pugModuleCache[ resolvedModuleName ];
 
         } catch(e) {
                 // If a pug template was requested, then return the pug error function
                 // If not a pug template, throw an error
                 if( module.exports.verbose )  log( `Could not find file ${fullModName}`)
-                if( !bPugTemplateRequest ) throw e;
 
                 // If we could not find the pug template, then use an error function
                 // instead that returns an error message formatted as html
@@ -132,55 +128,37 @@ function dynamic( modName ){
         // if the requested module was already loaded into the cache,
         // then return the module with no further action required.
         if ( xModule ){
-                if( module.exports.verbose )  log( `Module ${modName} found in the dynamic cache`)
+             if( module.exports.verbose )  log( `Module ${modName} found in the dynamic cache`)
              return xModule ;
         }
 
         // If the request is for a pug template, then use PUG to compile it 
         // into a javascript function before returning it. 
-        log(`Pug template? ${bPugTemplateRequest}`);
-        if( bPugTemplateRequest ){
+       
+        if( module.exports.verbose )  log(`Compling pug function ${resolvedModuleName}`);
+
+        try{
+                // Attempt to compile the module into javascript.
+                xModule = pug.compileFile( resolvedModuleName );
+                if( module.exports.verbose )  log(`Pug template compiled into [${ typeof xModule }]`);
+
+        } catch(e) {
                 
-                if( module.exports.verbose )  log(`Compiling pug function ${resolvedModuleName}`);
-                try{
-                        // Attempt to compile the module into javascript.
-                        xModule = pug.compileFile( resolvedModuleName );
-                        if( module.exports.verbose )  log(`Pug template compiled into [${ typeof xModule }]`);
-
-                } catch(e) {
-                        
-                        if( module.exports.verbose )  log(`Error attempting pug compile:`, e );
-                        xModule = pugErrorFunction( resolvedModuleName, e );
-
-                };
-
-        } else {
-                // Not a Pug template, so load it as a Node module
-                if( module.exports.verbose )  log(`~159 Loading node module ${resolvedModuleName}`);
-                try{
-                        xModule = require( resolvedModuleName );
-
-                        if( module.exports.verbose )  log( `~162 ..Module ${resolvedModuleName} has been loaded` );
-
-                } catch(e){
-                        
-                        log("~166 Error", e)
-                        throw e;
-
-                };
+                if( module.exports.verbose )  log(`Error attempting pug compile:`, e );
+                xModule = pugErrorFunction( resolvedModuleName, e );
         }
 
 
         // save it in our own cache under the fully expanded name
-        dynamicCache[ resolvedModuleName ] = xModule;
-        module.exports.moduleList = Object.keys( dynamicCache );
+        pugModuleCache[ resolvedModuleName ] = xModule;
+        module.exports.moduleList = Object.keys( pugModuleCache );
 
         if( module.exports.verbose ) log( `Module has been saved to dynamic cache, name is ${resolvedModuleName}` );
 
         try{
           
-                // set up the monitoring for the module, so that it is removed from the
-                // cache if the source code is changed.
+                // set up the monitoring for the module, so that if the source code is changed
+                // the compiled module is removed from the cache.
                 let watcher = null;
                 watcher = fs.watch(
                         resolvedModuleName
@@ -189,12 +167,11 @@ function dynamic( modName ){
                                 
                                 // remove references from caches so that on next request it will
                                 // be reloaded from the source file.
-                                delete dynamicCache[ resolvedModuleName ];
-                                delete require.cache[ resolvedModuleName ];
+                                delete pugModuleCache[ resolvedModuleName ];
 
                                 if( module.exports.verbose ) log( `Removed ${resolvedModuleName} from the dynamic cache`)
 
-                                module.exports.moduleList = Object.keys( dynamicCache );
+                                module.exports.moduleList = Object.keys( pugModuleCache );
 
                                 watcher.close();
 
@@ -209,10 +186,9 @@ function dynamic( modName ){
 
                 // remove references from caches so that on next request module will
                 // be reloaded from the source file.
-                delete dynamicCache[ resolvedModuleName ];
-                //delete require.cache[ resolvedModuleName ];
-
-                module.exports.moduleList = Object.keys( dynamicCache );
+                delete pugModuleCache[ resolvedModuleName ];
+                
+                module.exports.moduleList = Object.keys( pugModuleCache );
 
         }
 
@@ -228,8 +204,7 @@ function dynamic( modName ){
  * @param {*} e 
  */
 function pugErrorFunction( moduleName, e ){
-        log( "Building pugErrorFunction" );
-        let nodeutil = require("util");
+        if( module.exports.verbose )  log( "Building pugErrorFunction" );
         let errorData = {
                                 errorMessage: e.message
                                 , moduleName: moduleName
@@ -237,7 +212,7 @@ function pugErrorFunction( moduleName, e ){
                                 
                         };
 
-        compileError = dynamic('./pugCompilationError.pug');
+        compileError = loadPugModule('./pugCompilationError.pug');
         let errorFunction = 
                 function( dataObject ){ 
                         errorData.suppliedData = nodeutil.inspect( dataObject );
@@ -248,11 +223,23 @@ function pugErrorFunction( moduleName, e ){
 }
 
 log("Trying to compile pugCompilationError.pug");
-compileError = dynamic('./pugCompilationError.pug');
+compileError = loadPugModule('./pugCompilationError.pug');
 log("compileError: ", compileError);
-log( "##<< mLoad" );
+log( "##<< pugLoad" );
+
+
+// try{
+
+//     let e = new Error("Test Error");
+//     throw(e);
+// } catch(e){
+//     let test = compileError( {moduleName: "TEST", fullErrorInformation: nodeutil.inspect(e) , errorMessage: "There was a test error"} );
+//     log( test );
+
+// }
 
 // After loading, switch off verbose mode
-module.exports.verbose = true;
+module.exports.verbose = false;
 
-module.exports.htmlErrorReport = pugErrorFunction;
+//module.exports.htmlErrorReport = pugErrorFunction;
+

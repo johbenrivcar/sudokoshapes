@@ -2,14 +2,17 @@
  * Loads a fragment of html rendered from a given data object by a named
  * pug template
  */
+"use strict";
+console.log( "##>> divLoader.js" );
+
+const GLOB = require("./GLOB");
 
 const logger = GLOB.util.logger;
 const log = logger.getLogger( "loadDiv.js" );
 const dynLoad = GLOB.util.mLoad.dynLoad;
-const htmlFolder = GLOB.paths.folders.html;
+const htmlFolder = GLOB.settings.paths.folders.html;
 
 // Log that this module is being loaded
-log( "###>>>" );
 
 
    // -----------------------------------------------------------------------
@@ -32,3 +35,5 @@ log( "###>>>" );
         return html;
 
     }
+
+console.log('##<< divLoader.js')

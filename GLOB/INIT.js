@@ -6,66 +6,85 @@ Loads the settings.json file in root folder and returns it
 
 "use strict";
 
-console.log(`SKS SERVER STARTING ${ new Date().toISOString() }\n\n`.black.bgCyan + `\n##> INIT #############################################################################################################`);
+// Create the global GLOB object, if not already created
+const GLOB = require("./GLOB");
 
-const appRoot = require(  "./appRoot" );
-const {rootify, ROOT} = appRoot;
+
+require("colors");
+
+console.log(`SKS SERVER STARTING ${ new Date().toISOString() }\n\n`.black.bgCyan + `\n##> INIT ###################`);
+
+// Establish the root folder of this application
+const {rootify, ROOT} = require(  "./appRoot" );
+
+GLOB.ROOT = ROOT;
+GLOB.rootify = rootify;
+
 console.log("INIT: ROOT: " + ROOT);
-var settings_json = {};
-var localSettings_json = {};
 
-if(!global.GLOB){
+var settings = {};
+var localSettings = {};
+
+if(!GLOB.initDone){
     
-    settings_json = require( ROOT + "/settings.json");
+    settings = require( ROOT + "/settings.json");
     try{
-        localSettings_json = require( ROOT + "/settingsLocal.json");
+        localSettings = require( ROOT + "/settingsLocal.json");
 
-        console.log("INIT: Applying Local Settings", localSettings_json)
+        console.log("INIT: Applying Local Settings", localSettings)
         applyLocalSettings()
         
-        console.log("INIT: >>>>>>>>>>>>>>>>>>>>>>>>>>>> SETTINGS <<<<<<<<<<<<<<<<<<<<")
-        rootifyAllSettings()
-        console.log("INIT: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<")
-        console.log("INIT: SETTINGS DONE")
     } catch(e){
         // Do not apply any local settings
         console.log("INIT: There are no local settings to be applied");
     };
 
-    // Settings object is also saved to the global variable GLOB , which means that
+    console.log("INIT: >>>>>>>>>>>>>>>>>>>>>>>>>>>> SETTINGS <<<<<<<<<<<<<<<<<<<<")
+    
+    rootifyAllSettings()
+
+    console.log("INIT: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<")
+    console.log("INIT: SETTINGS DONE")
+    // Settings object is also saved to the variable GLOB , which means that
     // it can be referenced anywhere (in caps) without needing to load.
 
-    let glob = module.exports = global.GLOB = settings_json;
+    module.exports = settings;
 
-    glob.ROOT = ROOT;
+    GLOB.ROOT = ROOT;
+
+    GLOB.settings = settings;
 
     // Set utility functions library module
-    glob.util = require( "./util");
+    GLOB.util = require( "./util");
 
     // Add runtime instance values to util properties and methods
-    let gTU = glob.util;
+    let gUtil = GLOB.util;
 
-        gTU.appRoot = appRoot;
         console.log ("INIT: Initializing logger");
 
-        gTU.logger = require( "./logger" );
+        gUtil.logger = require( "./logger" );
 
         console.log ("INIT: nitializing mLoad")
-        gTU.mLoad = require( "./mLoad" );
+        gUtil.mLoad = require( "./mLoad" );
+        
+        console.log ("INIT: initializing pugLoader")
+        gUtil.pugLoader = require("./pugLoader")
         
         //gT.DBService = require( ROOT + "/database/dbService_mongo" ) ;
 
-    // Add the events subsystem to the glob
-    glob.EVENTS = require( "./events")({});
+    // Add an empty global events subsystem to the GLOB
+    GLOB.EVENTS = require( "./events")({});
+
+    GLOB.initDone = true;
 
 
-    console.log("INIT: global.GLOB", glob);
+    // local logger function
+    let log = gUtil.logger.getLogger("INIT");
 
-    let log = gTU.logger.getLogger("INIT");
     log("UTIL GLOBALS LOADED");
 
-    log.object("global.GLOB", GLOB);
-
+    if(GLOB.verbose) log.object("GLOB", GLOB);
+    
 }
 
 
@@ -73,7 +92,7 @@ if(!global.GLOB){
 
 
 //======================================================================= utility functions
-function rootifyAllSettings( a = settings_json , indent = "|->", iLevel = 0 ){
+function rootifyAllSettings( a = settings , indent = "|->", iLevel = 0 ){
 
     let sKeys = Object.keys(a);
     //console.log(indent + "[rootify keys>", sKeys);
@@ -96,7 +115,7 @@ function rootifyAllSettings( a = settings_json , indent = "|->", iLevel = 0 ){
     if (iLevel==0) console.log (a);
 }
 
-function applyLocalSettings( a = localSettings_json, b = settings_json , indent = "|" ){
+function applyLocalSettings( a = localSettings, b = settings , indent = "|" ){
     let skeys = Object.keys(a)
     skeys.forEach( (key)=>{
         if( typeof a[key] == 'object' ){

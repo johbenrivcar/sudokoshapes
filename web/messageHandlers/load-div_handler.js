@@ -19,11 +19,14 @@
 */
 const globUtil = GLOB.util;
 const getUID = globUtil.getUID;
+
+const pugLoader = globUtil.pugLoader;
+
 const log = globUtil.logger.getLogger( "load-div_handler" );
 const { dynamic, htmlErrorReport } = globUtil.mLoad;
 
-const FOLDERS = GLOB.paths.folders;
-const divsFolder = FOLDERS.pug + "divs/"
+const FOLDERS = GLOB.settings.paths.folders;
+const divsFolder = FOLDERS.divs
 
 //const loaderPath = `${settings.folders.pugDivs}login_template.pug`;
 //log( "LoaderPath:", loaderPath);
@@ -46,7 +49,9 @@ async function handleMessage( ws, msg, replyMsg ){
     // divname is the name of the div loader to be used
     // targetDiv is the div in the page into which the
     // loaded html will be sent.
-    let{ divName, targetDiv, divTarget } = msg
+    let{ divName, divFolder=null, targetDiv, divTarget } = msg
+    if(!divFolder) divFolder=divName;
+
     msg.divNonce = replyMsg.divNonce = getUID().substr(5,5);
 
     // The div target is the id of the page element where the
@@ -58,14 +63,14 @@ async function handleMessage( ws, msg, replyMsg ){
     ws.sendJSON( 
         {
         msgType: "status"
-        ,status: `Loading div ${divName} into ${divTarget}`
+        ,status: `Loading div ${divFolder}/${divName} into ${divTarget}`
         ,classes: "  box "
         } 
     );
 
     // Construct the name of the file that contains the code to 
     // load data for this div, /pug/divs/divname/divname_loader.js
-    let divLoaderPrefix = `${divsFolder}${divName}/${divName}`
+    let divLoaderPrefix = `${divsFolder}${divFolder}/${divName}`
     let divDataLoaderPath = `${divLoaderPrefix}_loader.js`
 
     // The dynamic function will perform the pug compilation
@@ -78,6 +83,7 @@ async function handleMessage( ws, msg, replyMsg ){
         log(".. module loaded") 
 
     } catch(err){
+
         //log(".. error on loading requested module", err);
         let errReporter = htmlErrorReport( divName, err );
         let html = errReporter(err) ;
@@ -90,36 +96,43 @@ async function handleMessage( ws, msg, replyMsg ){
 
     log(`Loaded data loader ${divDataLoaderPath}`);
 
+    Object.assign(replyMsg, {
+        msgType: "div",
+        divFolder,
+        divName,
+        divTarget
+    }) ;
+
     
     let divData = await divDataLoader.getDivData( ws, msg, replyMsg );
 
     if(!divData) divData = {};
-
-
-     divData.divNonce = getUID().substr(4,6);
-     divData.divName = divName;
-     divData.divTarget = divTarget;
 
     log.object("LOADED DIV DATA", divData );
 
     // First check if the loader also sent the reply message.
     if( replyMsg.hasBeenSent ) return null;
 
+     divData.divNonce = getUID().substr(4,6);
+     divData.divName = divName;
+     divData.divTarget = divTarget;
+     divData.divRoot = `/divs/${divFolder}`;
+
+
     // Now get the html message template from the pug div folder
     let pugDivTemplatePath =  divLoaderPrefix + `_template.pug` 
-    let pugDivTemplate = dynamic(pugDivTemplatePath);
+
+    let pugDivTemplate = pugLoader.load(pugDivTemplatePath);
+    
     let divHtml = pugDivTemplate( divData );
 
     log(`Finished loading the div html from ${divDataLoaderPath}`);
-
+    
+    replyMsg.html = divHtml
+    
     log.object("returned html", divHtml);
 
-    Object.assign(replyMsg, {
-        msgType: "div",
-        divName,
-        divTarget,
-        html: divHtml
-    }) ;
+    log.object("returned replyMsg", replyMsg);
 
     replyMsg.send();
 

@@ -1,5 +1,8 @@
 
-// dictionary of callback functions associated with messages sent to the server. When the
+
+
+
+// Dictionary of callback functions associated with messages sent to the server. When the
 // server responds it will include the callbackKey that identifies the function to be called
 // to process the server response.  Note that messages may also be handed to event handlers 
 // depending on their msgType property.
@@ -324,7 +327,7 @@ function ws_closeSession (){
 }
 
 function ws_heartbeatReply ( data ){
-    console.log( `Heartbeat ${data.tickNumber}` );
+    //console.log( `Heartbeat ${data.tickNumber}` );
     //console.log( data );
     $(`.hbnumber`).html( " #" + data.tickNumber + " @" + data.hhmmss.substr(0,5)+"GMT " );
 };
@@ -433,7 +436,7 @@ function ws_goToHomeDiv(){
  * @param {*} spec 
  */
 function ws_loadOneDiv( spec ){
-    ws_goToDiv( spec.name, spec.target, spec.data = null, spec.cbFunction, spec.cbData );
+    ws_goToDiv( spec.name, spec.folder, spec.target, spec.data, spec.cbFunction, spec.cbData );
 };
 
 function ws_loadSomeDivs( specs ){
@@ -448,8 +451,11 @@ function ws_loadSomeDivs( specs ){
  * @param {string} divTarget The id of the div into which the html will be loaded
  * @param {*} divData Data to be used in constructing the html, if any
  */
-function ws_goToDiv( divName, divTarget, divData = null, cbFunction = null, cbData = null ){
+function ws_goToDiv( divName, divFolder=null, divTarget, divData = null, cbFunction = null, cbData = null ){
+
     let msg = {msgType: 'load-div', divName, divTarget, divData };
+    if(divFolder) msg.divFolder = divFolder;
+
     // Session data is always added to a ws message
     ws_sendMessage( msg, cbFunction, cbData ) ;
 };
@@ -654,11 +660,13 @@ function ws_Initialize_WebSocket(){
         // Establish the message type
         let msgType = msg.msgType? msg.msgType.toLowerCase() : "";
         
-        // Check if there is a handler for this message type
-        if( ws_msgHandlers[ msgType ] ){
+        // Check if there is a handler for this message type. Handlers
+        // for message types are registered using ws.wsOn
+        let fn = ws_msgHandlers[ msgType ]
+        if( fn ){
             let data = ws_msgHandlerData[ msgType ];
-            ws_msgHandlers[ msgType ]( msg, data );
-        } 
+            fn( msg, data );
+        } ;
         
         // Check if there is a callback key on this message
         // Callback keys are registered when a message is sent to the server
@@ -718,7 +726,7 @@ function ws_personLogin( msg ){
                    : "login" ;
     
     ws.log(`Opening default function at ${grpmemHome} `)
-    ws.goToDiv(grpmemHome, "page_div" );
+    ws.goToDiv(grpmemHome, grpmemHome, "page_div" );
     
 }
 

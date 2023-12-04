@@ -1,22 +1,31 @@
+include ../../mixins/grid_mixin.pug 
+    //- div(id=`grid${val}`)
+    //-     div(id=`grid${val}-id`) Not loaded
+    //-     table(style=`` class=`grid`)
+    //-         tr 
+    //-             td( class=`col-divider`)
+    //-             td(rowspan=13 class=`col-divider`)
+    //-             each cg in ["A","B","C"]
+    //-                 td(colspan=3 style="width: 100px;" class="colGroup-heading")
+    //-                     | #{cg}
+    //-                 td(rowspan=13 class=`col-divider`)
 
-mixin grid(val)
-    div(id=`grid${val}`)
-        div(id=`grid${val}-id`) Not loaded
-        table(style=`` class=`grid`)
-            tr 
-                each cg in ["1-3","4-6","7-9"]
-                    td(colspan=3)
-                        | [---#{cg}---]
-
-            each row in [1,2,3,4,5,6,7,8,9]
-                tr()
-                    each col in [1,2,3,4,5,6,7,8,9]
-                        td(id=`gc-${val}-${row}-${col}` class=`hue-U` style="text-align: center; vertical-align: middle;") #{row}#{col}
-        div
-            h3 
-                | Analysis
-                span(onClick=` runAnalysis(${val});` class=`button` ) Run
-            div( id=`gridanalysis-${val}`)
+    //-         each row in [1,2,3,4,5,6,7,8,9]
+    //-             if [1,4,7].includes(row)
+    //-                 tr() 
+    //-                     each cg in ["A","B","C"]
+    //-                             td(colspan=4 style="width: 100px;" class="col-divider")
+    //-             tr()
+    //-                 if [1,4,7].includes(row)
+    //-                     td(rowspan=3 class=`colGroup-heading`) #{row==1? "A": row==4? "B": "C"}
+    //-                 each col in [1,2,3,4,5,6,7,8,9]
+    //-                     td(id=`gc-${val}-${row}-${col}` class=`grid-cell hue-U` style="text-align: center; vertical-align: middle;") #{row}#{col}
+                
+    //-     div
+    //-         h3 
+    //-             | Analysis
+    //-             span(onClick=` runAnalysis(${val});` class=`button` ) Run
+    //-         div( id=`gridanalysis-${val}`)
 
 | <!DOCTYPE html>
 html
@@ -50,16 +59,15 @@ html
     script.
         window.log=function(...args){
             console.log(...args);
-        }
+        } 
         $( ()=>{
             ws_loadOneDiv({
                 name: 'example'
                 , target: 'example'
             });
-            log("The home template has loaded.")
+            log("The home page template has loaded.")
         });
     body
-        h1 This is the Home page generated from a pug template in a sub-folder.
         #page_div( style="border-width:1px; border-style: solid; border-color:green; width:100%" )
             table#page-table( style="border-width:1px; border-style: solid; border-color:red; width:100%" )
                 tr 
@@ -69,25 +77,30 @@ html
                 tr 
                     td( colspan=3 )
                         #menu-top menu top row
-                            button( onClick=" ws.updateStatus(`Clicked`); ") This is a button
+                            button( class="button" onClick=" ws.updateStatus(`Clicked`); ") Home
                 tr( style=`height: 500px`)
                     td( style=" width: 100px; " )
-                        #menu-left menu left
+                        #menu-left 
+                           p.button(onClick=`home_script.showGrid_AAA();`) menu left
+                           p.button(onClick=`home_script.defineNewGrid();`) Define new grid
+                           p.button(onClick=`home_script.loadGridList();`) Grid list
                     td 
                         #page-main 
                             h1 Sudoku analysis
-                        table( style="width:100%") 
-                            tr( style="height:500px")
-                                each val in [1,2]  
-                                    td
-                                        +grid(val)
-                    td#gridlist grids
+                            table( style="width:100% ; height: 100%") 
+                                tr( style="height:100%")
+                                    each val in ["AAA", "BBB"]  
+                                        td
+                                            +grid(val)
+                    td#gridlist( style="width: 300px;")
+                        
                     
                 tr 
                     td( colspan=3 )
                         #page-footer 
                             p Page footer
         #example
+
         #example-2
         #status.statusmsg status info here y
         #info 
@@ -96,3 +109,4 @@ html
             p.time The time is #{dts.toISOString()}
             p The page name is #{pageName}
             p The page root folder is #{pageRoot}
+            p Generated from the pug template [#{pugTemplatePath}] 

@@ -7,10 +7,32 @@ h1{
     font-size: 16pt;
 }
 
+.grid{
+    table-layout: fixed;
+    border-style: none;
+    border-collapse: collapse;
+}
+.grid-div{
+    height: 100%
+}
+.grid-cell{
+    border-style: solid;
+}
+.grid-cell:hover{
+    background-color: rgb(215, 245, 215);
+}
+.col-divider{
+    border-style: none;
+}
 .grid-loading{
     background-color: yellow;
 }
-
+.colGroup-heading{
+    background-color: white;
+    text-align: center;
+    border-style: solid;
+    vertical-align: middle;
+}
 .hue-A{
     background-color: azure;
 }
